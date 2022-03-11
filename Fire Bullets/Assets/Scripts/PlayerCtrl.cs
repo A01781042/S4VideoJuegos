@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerCtrl : MonoBehaviour {
 
@@ -19,6 +20,10 @@ public class PlayerCtrl : MonoBehaviour {
     public GameObject leftbullet;
     public GameObject rightbullet;
     public bool leftPressed, rightPressed;
+
+    public static int score;
+
+    public TMP_Text life;
 
     Rigidbody2D rb;
     SpriteRenderer sr;
@@ -61,6 +66,8 @@ public class PlayerCtrl : MonoBehaviour {
 
         if (rightPressed)
             MovePlayer(speedBoost);
+
+        life.text = "Life: " + score;
     }
 
     private void OnDrawGizmos()
@@ -137,33 +144,18 @@ public class PlayerCtrl : MonoBehaviour {
         }
     }
 
-    public void MobileMoveLeft()
+
+    public void modifyLife(int amount)
     {
-        leftPressed = true;
+        score = score + amount;
+        
+        if (score < 0) 
+        {
+            Destroy(gameObject);   
+        }
+        
     }
 
-    public void MobileMoveRight()
-    {
-        rightPressed = true;
-    }
-
-    public void MobileStop()
-    {
-        leftPressed = false;
-        rightPressed = false;
-
-        StopMoving();
-    }
-
-    public void MobileFireBullets()
-    {
-        FireBullets();
-    }
-
-    public void MobileJump()
-    {
-        Jump();
-    }
 
     void OnCollisionEnter2D(Collision2D other)
     {
@@ -174,7 +166,8 @@ public class PlayerCtrl : MonoBehaviour {
 
         if (other.gameObject.CompareTag("Enemy"))
         {
-            Destroy(gameObject);
+            modifyLife(-1);
+            //Destroy(gameObject);
         }
     }
 }

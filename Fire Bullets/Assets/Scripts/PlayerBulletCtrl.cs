@@ -7,9 +7,13 @@ public class PlayerBulletCtrl : MonoBehaviour {
 
     Rigidbody2D rb;
 
+    PlayerCtrl control;
+
 	// Use this for initialization
 	void Start () {
         rb = GetComponent<Rigidbody2D>();
+        GameObject player = GameObject.FindWithTag("Player");
+        control = player.GetComponent<PlayerCtrl>();
 	}
 	
 	// Update is called once per frame
@@ -22,11 +26,14 @@ public class PlayerBulletCtrl : MonoBehaviour {
         if (collision.gameObject.CompareTag("Enemy"))
         {
             GameCtrl.instance.BulletHitEnemy(collision.gameObject.transform);
+            control.modifyLife(1);
             Destroy(gameObject);
         }
-        else if (collision.gameObject.CompareTag("Player"))
+        //else if (collision.gameObject.CompareTag("Player"))
         {
-            Destroy(gameObject);
+            //PlayerCtrl.modifyLife(-1);
+            //Destroy(gameObject);
+
         }
     }
 
